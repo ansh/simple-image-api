@@ -22,6 +22,7 @@ mongoose.connect(
     replset: {
       socketOptions: { keepAlive: 300000, connectTimeoutMS: 30000 },
     },
+    ignoreUndefined: true,
   },
   (err) => {
     if (err) return console.log("Error: ", err);

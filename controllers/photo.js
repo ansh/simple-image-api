@@ -30,7 +30,7 @@ const newPhoto = (req, res, next) => {
     name: req.body.name,
     url: req.file.path,
     description: req.body.description,
-    favorite: req.body.favorite,
+    favorite: req.body.favorite || false,
   });
 
   newPhoto.save((err, data) => {
@@ -41,11 +41,11 @@ const newPhoto = (req, res, next) => {
 
 //GET '/photo'
 const getAllPhoto = (req, res, next) => {
-  const { page = 1, limit = 10 } = req.query;
+  const { page = 1, limit = 10, favStatus, name } = req.query;
 
-  Photo.find({}, (err, data) => {
+  Photo.find({ name: name, favorite: favStatus }, (err, data) => {
     if (err) return res.json({ Error: err });
-    Photo.countDocuments((err, count) => {
+    Photo.countDocuments({ name: name, favorite: favStatus }, (err, count) => {
       if (err) return res.json({ Error: err });
       return res.json({ data, totalPages: Math.ceil(count / limit), currentPage: page });
     });
