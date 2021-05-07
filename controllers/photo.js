@@ -35,7 +35,14 @@ const getAllPhoto = (req, res, next) => {
 
 //GET '/photo/:id'
 const getPhotoById = (req, res, next) => {
-  res.json({ message: "GET one photo" }); // dummy function for now
+  let id = req.params.id;
+
+  Photo.findById(id, (err, data) => {
+    if (err | !data) {
+      return res.json({ message: "Photo doesn't exist" });
+    }
+    return res.json(data);
+  });
 };
 
 //PATCH '/photo/:id'
