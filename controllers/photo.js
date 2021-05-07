@@ -59,16 +59,23 @@ const getPhotoById = (req, res, next) => {
   let id = req.params.id;
 
   Photo.findById(id, (err, data) => {
-    if (err | !data) {
-      return res.json({ message: "Photo doesn't exist" });
-    }
+    if (err) return res.json({ Error: err });
+    if (!data) return res.json({ message: "Photo doesn't exist" });
+
     return res.json(data);
   });
 };
 
 //PATCH '/photo/:id'
 const editPhotoById = (req, res, next) => {
-  res.json({ message: "PATCH edit photo" }); // TODO: Patch function
+  let id = req.params.id;
+
+  Photo.findByIdAndUpdate(id, req.body, { new: true }, (err, data) => {
+    if (err) return res.json({ Error: err });
+    if (!data) return res.json({ message: "Photo doesn't exist" });
+
+    return res.json(data);
+  });
 };
 
 //POST '/photo/:id'
@@ -76,9 +83,9 @@ const favPhotoById = (req, res, next) => {
   let id = req.params.id;
 
   Photo.findById(id, (err, data) => {
-    if (err | !data) {
-      return res.json({ message: "Photo doesn't exist" });
-    }
+    if (err) return res.json({ Error: err });
+    if (!data) return res.json({ message: "Photo doesn't exist" });
+
     const currentlyFav = data.favorite;
     data.favorite = !currentlyFav;
     data.save((err) => {

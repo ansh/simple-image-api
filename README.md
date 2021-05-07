@@ -3,12 +3,12 @@
 ## Requirements
 
 Create an API to manage photos for an album. Since the client has many photos, they also require a photo to be able to be marked as “favorite”. This API should follow RESTful design patterns and support the following actions for a Photo model:
-- Upload a photo
-- Edit a photo
-- Get a specific photo
+- Upload a photo with file size & file type validation -> Done
+- Edit a photo -> Done
+- Get a specific photo -> Done
 - Get a list of photos (paginated), with the ability to optionally filter by name or/and by
 favorite status
-- Switch a specific photo’s favorite status (on or off)
+- Switch a specific photo’s favorite status (on or off) -> Done
 
 
 Photo Model:
