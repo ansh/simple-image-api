@@ -5,8 +5,11 @@ const express = require("express"); //import express
 const router = express.Router();
 const photoController = require("../controllers/photo");
 
+const multer = require("multer");
+const upload = multer();
+
 // routes for /photo
-router.post("/photo", photoController.newPhoto);
+router.post("/photo", upload.none(), photoController.newPhoto);
 router.get("/photo", photoController.getAllPhoto);
 
 // routes for /photo/:id

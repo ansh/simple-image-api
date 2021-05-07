@@ -1,8 +1,26 @@
 // controllers/photo.js
+const Photo = require("../models/photo");
+const multer = require("multer");
 
 //POST '/photo'
 const newPhoto = (req, res, next) => {
-  res.json({ message: "POST new photo" }); // dummy function for now
+  Photo.findOne({ name: req.body.name }, (data) => {
+    if (data === null) {
+      const newPhoto = new Photo({
+        name: req.body.name,
+        url: req.body.url, //TODO: make this the actual URL
+        description: req.body.description,
+        favorite: req.body.favorite,
+      });
+
+      newPhoto.save((err, data) => {
+        if (err) return res.json({ Error: err });
+        return res.json(data);
+      });
+    } else {
+      res.json({ message: "Photo already exists" });
+    }
+  });
 };
 
 //GET '/photo'
