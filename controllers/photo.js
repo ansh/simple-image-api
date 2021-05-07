@@ -35,12 +35,17 @@ const newPhoto = (req, res, next) => {
 
 //GET '/photo'
 const getAllPhoto = (req, res, next) => {
+  const { page = 1, limit = 10 } = req.query;
+
   Photo.find({}, (err, data) => {
-    if (err) {
-      return res.json({ Error: err });
-    }
-    return res.json(data);
-  });
+    if (err) return res.json({ Error: err });
+    Photo.countDocuments((err, count) => {
+      if (err) return res.json({ Error: err });
+      return res.json({ data, totalPages: Math.ceil(count / limit), currentPage: page });
+    });
+  })
+    .limit(limit * 1)
+    .skip((page - 1) * limit);
 };
 
 //GET '/photo/:id'
