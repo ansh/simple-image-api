@@ -52,7 +52,24 @@ const editPhotoById = (req, res, next) => {
 
 //POST '/photo/:id'
 const favPhotoById = (req, res, next) => {
-  res.json({ message: "POST fav one photo" }); // dummy function for now
+  let id = req.params.id;
+
+  Photo.findById(id, (err, data) => {
+    if (err | !data) {
+      return res.json({ message: "Photo doesn't exist" });
+    }
+    const currentlyFav = data.favorite;
+    data.favorite = !currentlyFav;
+    data.save((err) => {
+      if (err) return res.json({ Error: err });
+
+      return res.json({
+        message: `${currentlyFav ? "Removed" : "Added"} photo ${id} ${
+          currentlyFav ? "from" : "to"
+        } favorites`,
+      });
+    });
+  });
 };
 
 module.exports = { newPhoto, getAllPhoto, getPhotoById, editPhotoById, favPhotoById };
