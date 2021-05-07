@@ -10,7 +10,19 @@ const storage = multer.diskStorage({
     cb(null, file.originalname);
   },
 });
-const uploadImg = multer({ storage: storage }).single("url");
+const uploadImg = multer({
+  storage: storage,
+  fileFilter: function (req, file, cb) {
+    if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/)) {
+      return cb(new Error("Only image files are allowed!"));
+    }
+    const maxSize = 1 * 1024 * 1024; // for 1MB
+    if (file.buffer.byteLength > maxSize) {
+      return cb(new Error("Only image files under 1mb are allowed!"));
+    }
+    cb(null, true);
+  },
+}).single("url");
 
 //POST '/photo'
 const newPhoto = (req, res, next) => {
