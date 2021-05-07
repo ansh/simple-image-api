@@ -2,13 +2,23 @@
 const Photo = require("../models/photo");
 const multer = require("multer");
 
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "./uploads");
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.originalname);
+  },
+});
+const uploadImg = multer({ storage: storage }).single("url");
+
 //POST '/photo'
 const newPhoto = (req, res, next) => {
   Photo.findOne({ name: req.body.name }, (data) => {
     if (data === null) {
       const newPhoto = new Photo({
         name: req.body.name,
-        url: req.body.url, //TODO: make this the actual URL
+        url: req.file.path,
         description: req.body.description,
         favorite: req.body.favorite,
       });
@@ -47,7 +57,7 @@ const getPhotoById = (req, res, next) => {
 
 //PATCH '/photo/:id'
 const editPhotoById = (req, res, next) => {
-  res.json({ message: "PATCH edit photo" }); // dummy function for now
+  res.json({ message: "PATCH edit photo" }); // TODO: Patch function
 };
 
 //POST '/photo/:id'
@@ -72,4 +82,4 @@ const favPhotoById = (req, res, next) => {
   });
 };
 
-module.exports = { newPhoto, getAllPhoto, getPhotoById, editPhotoById, favPhotoById };
+module.exports = { newPhoto, uploadImg, getAllPhoto, getPhotoById, editPhotoById, favPhotoById };

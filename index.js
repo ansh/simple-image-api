@@ -6,6 +6,8 @@ app.use(express.json()); // parses incoming requests with JSON payloads
 
 app.use("/", router); // to use routes
 
+app.use("/uploads", express.static("./uploads")); // to be able to access the uploads
+
 const mongoose = require("mongoose");
 mongoose.connect(
   "mongodb+srv://user:kKDV911gEWlzNCiI@cluster0.5eeco.mongodb.net/myFirstDatabase", // should generally be in an .env file
