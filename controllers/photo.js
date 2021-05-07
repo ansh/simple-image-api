@@ -25,7 +25,12 @@ const newPhoto = (req, res, next) => {
 
 //GET '/photo'
 const getAllPhoto = (req, res, next) => {
-  res.json({ message: "GET all photo" }); // dummy function for now
+  Photo.find({}, (err, data) => {
+    if (err) {
+      return res.json({ Error: err });
+    }
+    return res.json(data);
+  });
 };
 
 //GET '/photo/:id'
