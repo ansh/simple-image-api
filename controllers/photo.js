@@ -35,7 +35,7 @@ const newPhoto = (req, res, next) => {
 
   newPhoto.save((err, data) => {
     if (err) return res.json({ Error: err });
-    return res.json(data);
+    return res.status(200).json(data);
   });
 };
 
@@ -56,7 +56,9 @@ const getAllPhoto = (req, res, next) => {
     Photo.countDocuments(query, (err, count) => {
       console.log("count: ", count);
       if (err) return res.json({ Error: err });
-      return res.json({ data, totalPages: Math.ceil(count / limit), currentPage: page });
+      return res
+        .status(200)
+        .json({ data, totalPages: Math.ceil(count / limit), currentPage: page });
     });
   })
     .limit(limit * 1)
@@ -71,7 +73,7 @@ const getPhotoById = (req, res, next) => {
     if (err) return res.json({ Error: err });
     if (!data) return res.json({ message: "Photo doesn't exist" });
 
-    return res.json(data);
+    return res.status(200).json(data);
   });
 };
 
@@ -83,7 +85,7 @@ const editPhotoById = (req, res, next) => {
     if (err) return res.json({ Error: err });
     if (!data) return res.json({ message: "Photo doesn't exist" });
 
-    return res.json(data);
+    return res.status(200).json(data);
   });
 };
 
@@ -100,7 +102,7 @@ const favPhotoById = (req, res, next) => {
     data.save((err) => {
       if (err) return res.json({ Error: err });
 
-      return res.json({
+      return res.status(200).json({
         message: `${currentlyFav ? "Removed" : "Added"} photo ${id} ${
           currentlyFav ? "from" : "to"
         } favorites`,
