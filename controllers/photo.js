@@ -27,14 +27,17 @@ const uploadImg = multer({
 //POST '/photo'
 const newPhoto = (req, res, next) => {
   const newPhoto = new Photo({
-    name: req.body.name,
+    name: req.body.name || req.file.path,
     url: req.file.path,
-    description: req.body.description,
+    description: req.body.description || "",
     favorite: req.body.favorite || false,
   });
 
   newPhoto.save((err, data) => {
-    if (err) return res.json({ Error: err });
+    if (err) {
+      console.log(err);
+      return res.status(500).json({ Error: err });
+    }
     return res.status(200).json(data);
   });
 };

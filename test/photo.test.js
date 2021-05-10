@@ -1,5 +1,3 @@
-//During the test the env variable is set to test
-process.env.NODE_ENV = "test";
 // db requires
 const mongoose = require("mongoose");
 const Photo = require("../models/photo");
@@ -11,6 +9,10 @@ chai.use(chaiHttp);
 let should = chai.should();
 
 describe("Photo", () => {
+  beforeEach((done) => {
+    Photo.deleteMany({}, (err) => {});
+    done();
+  });
   /*
    * GET /photo
    */
@@ -34,24 +36,36 @@ describe("Photo", () => {
    * POST /photo
    */
   describe("POST /photo", () => {
+    let photo;
     it("it should POST one new photo", (done) => {
-      const testPhoto = {
-        name: "photo",
-        description: "photo",
-        favorite: false,
-      };
       chai
         .request(listener)
         .post("/photo")
         .type("form")
-        .attach("url", "test/fb.png")
         .field("name", "photo")
         .field("description", "a photo of photo")
         .field("favorite", false)
+        .attach("url", "test/fb.png", "fb.png")
         .end((err, res) => {
           res.should.have.status(200);
+          should.exist(res.body);
+          photo = res.body;
+          done();
         });
-      done();
+    });
+    /*
+     * GET /photo/:id
+     */
+    it("it should GET one photo based on ID of previously uploaded photo", (done) => {
+      const id = photo._id;
+      chai
+        .request(listener)
+        .get(`/photo/${id}`)
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.should.have.property("name");
+          done();
+        });
     });
   });
 });
