@@ -6,28 +6,30 @@ const Photo = require("../models/photo");
 //Require the dev-dependencies for testing
 const chai = require("chai");
 const chaiHttp = require("chai-http");
-const app = "../app.js";
+const listener = require("../index.js");
 chai.use(chaiHttp);
 let should = chai.should();
 
-// Parent block for Photos
-describe("Photos", () => {
+describe("Photo", () => {
   /*
    * GET /photo
    */
   describe("GET /photo", () => {
     it("it should GET all the photos", (done) => {
       chai
-        .request(app)
+        .request(listener)
         .get("/photo")
         .end((err, res) => {
+          should.exist(res);
           res.should.have.status(200);
-          res.body.data.should.be.a("array");
-          res.body.data.length.should.be.eql(0);
+          should.exist(res.body);
+          // res.body.data.should.be.a("array");
+          // res.body.data.length.should.be.eql(0);
+          done();
         });
-      done();
     });
   });
+
   /*
    * POST /photo
    */
@@ -37,12 +39,15 @@ describe("Photos", () => {
         name: "photo",
         description: "photo",
         favorite: false,
-        url: "uploads/fb.png",
       };
       chai
-        .request(app)
+        .request(listener)
         .post("/photo")
-        .send(testPhoto)
+        .type("form")
+        .attach("url", "test/fb.png")
+        .field("name", "photo")
+        .field("description", "a photo of photo")
+        .field("favorite", false)
         .end((err, res) => {
           res.should.have.status(200);
         });
