@@ -1,8 +1,14 @@
 # Simple Image API
 
+Simple API to manage photos for an album.
+
+# Setup
+1. Run `yarn` to install dependencies 
+2. Create `.env` file with MONGO_URI
+3. Run `yarn start`
+
 ## Requirements
 
-Create an API to manage photos for an album. Since the client has many photos, they also require a photo to be able to be marked as “favorite”. This API should follow RESTful design patterns and support the following actions for a Photo model:
 - Upload a photo with file size & file type validation -> Done
 - Edit a photo -> Done
 - Get a specific photo -> Done
@@ -39,3 +45,6 @@ Validation requirements:
 | /photo/:id | GET         | Gets a specific photo      |
 | /photo/:id | PATCH       | Edit a specific photo      |
 | /photo/:id | POST        | Favorites a specific photo |
+
+
+
