@@ -11,11 +11,15 @@ chai.use(chaiHttp);
 
 describe("Connection to MongoDB", () => {
   beforeEach(async () => {
-    await mongoose.connect(process.env.MONGO_URI);
+    await mongoose.connect(process.env.MONGO_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      ignoreUndefined: true,
+    });
   });
 
-  describe("Get all photos", () => {
-    it("it should GET all the photos", (done) => {
+  describe("Get all photos DB", () => {
+    it("it should GET all the photos for DB test", (done) => {
       Photo.find({}, (err, data) => {
         data.should.be.a("array");
       });
