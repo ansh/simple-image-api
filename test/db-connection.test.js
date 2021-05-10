@@ -8,6 +8,7 @@ const Photo = require("../models/photo");
 let chai = require("chai");
 let chaiHttp = require("chai-http");
 chai.use(chaiHttp);
+let should = chai.should();
 
 describe("Connection to MongoDB", () => {
   beforeEach(async () => {
