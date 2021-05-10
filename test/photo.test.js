@@ -8,16 +8,10 @@ const chai = require("chai");
 const chaiHttp = require("chai-http");
 const app = "../app.js";
 chai.use(chaiHttp);
+let should = chai.should();
 
 // Parent block for Photos
 describe("Photos", () => {
-  beforeEach((done) => {
-    Photo.remove({}, (err) => {
-      //Before each test we empty the database
-      done();
-    });
-  });
-
   /*
    * GET /photo
    */
@@ -34,21 +28,23 @@ describe("Photos", () => {
       done();
     });
   });
-
   /*
    * POST /photo
    */
-  describe("GET /photo", () => {
-    it("it should GET all the photos", (done) => {
-      const testPhoto = {};
+  describe("POST /photo", () => {
+    it("it should POST one new photo", (done) => {
+      const testPhoto = {
+        name: "photo",
+        description: "photo",
+        favorite: false,
+        url: "uploads/fb.png",
+      };
       chai
         .request(app)
         .post("/photo")
         .send(testPhoto)
         .end((err, res) => {
           res.should.have.status(200);
-          res.body.data.should.be.a("array");
-          res.body.data.length.should.be.eql(0);
         });
       done();
     });
