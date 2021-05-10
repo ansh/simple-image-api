@@ -41,11 +41,20 @@ const newPhoto = (req, res, next) => {
 
 //GET '/photo'
 const getAllPhoto = (req, res, next) => {
-  const { page = 1, limit = 10, favStatus, name } = req.query;
+  const { page = 1, limit = 10, favorite = undefined, name = undefined } = req.query;
+  // Have to do it like this because countDocuments is broken for mongoose
+  let query = {};
+  if (favorite) {
+    query.favorite = favorite;
+  }
+  if (name) {
+    query.name = name;
+  }
 
-  Photo.find({ name: name, favorite: favStatus }, (err, data) => {
+  Photo.find(query, (err, data) => {
     if (err) return res.json({ Error: err });
-    Photo.countDocuments({ name: name, favorite: favStatus }, (err, count) => {
+    Photo.countDocuments(query, (err, count) => {
+      console.log("count: ", count);
       if (err) return res.json({ Error: err });
       return res.json({ data, totalPages: Math.ceil(count / limit), currentPage: page });
     });
