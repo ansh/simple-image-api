@@ -9,10 +9,12 @@ chai.use(chaiHttp);
 let should = chai.should();
 
 describe("Photo", () => {
-  beforeEach((done) => {
-    Photo.deleteMany({}, (err) => {});
-    done();
-  });
+  // To test with a clean slate enable this to delete everything before each test
+  // beforeEach((done) => {
+  //   Photo.deleteMany({}, (err) => {});
+  //   done();
+  // });
+
   /*
    * GET /photo
    */
