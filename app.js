@@ -15,6 +15,7 @@ const mongoose = require("mongoose");
 mongoose.connect(
   process.env.MONGO_URI, // should generally be in an .env file
   {
+    ignoreUndefined: true,
     useFindAndModify: false,
     useUnifiedTopology: true,
     useNewUrlParser: true,
@@ -25,7 +26,6 @@ mongoose.connect(
     replset: {
       socketOptions: { keepAlive: 300000, connectTimeoutMS: 30000 },
     },
-    ignoreUndefined: true,
   },
   (err) => {
     if (err) return console.log("Error: ", err);
